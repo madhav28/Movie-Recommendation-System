@@ -49,6 +49,19 @@ def app_content():
                     comprehensive and user-friendly platform that adapts to evolving customer preferences. The\
                     primary objectives are to optimize user satisfaction, boost user retention rates, and align with\
                     the dynamic tastes of our customer base")
+        st.markdown("#### Data Source:")
+        st.markdown(
+            "Movie Lens 25M Dataset - https://grouplens.org/datasets/movielens/25m/")
+
+    with tab2:
+        st.markdown("#### Distributions for Movies:")
+        st.image("movie_release.png")
+        st.image("movie_genres.png")
+        st.markdown("#### Distributions for Movie Rating:")
+        st.image("average_rating.png")
+        st.image("movie_rating_rel.png")
+        st.image("movie_rating_genre.png")
+        st.image("most_rated_movies.png")
 
 
 if __name__ == "__main__":
