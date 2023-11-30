@@ -63,6 +63,46 @@ def app_content():
         st.image("movie_rating_genre.png")
         st.image("most_rated_movies.png")
 
+    with tab3:
+        tab_a1, tab_a2, tab_a3 = st.tabs(["Collaborative Filtering",
+                                    "Content-Based Filtering", "Hybrid"])
+        with tab_a1:
+            st.markdown("#### Introduction:")
+            st.markdown("""
+                        Collaborative filtering is a technique used in recommendation systems to predict a user's preferences or interests by leveraging the preferences and behaviors of a group of users. The underlying idea is that users who have agreed in the past on certain issues tend to agree again in the future. This method assumes that if a user A has similar preferences to a user B on a certain issue, A is more likely to share B's preferences on a different issue as well.
+
+            There are two main types of collaborative filtering: user-based and item-based.
+
+            User-Based Collaborative Filtering:
+
+            This approach recommends items to a target user based on the preferences and behavior of users who are similar to that target user.
+            The system identifies users with similar preferences to the target user and recommends items that those similar users have liked or interacted with.
+            The similarity between users is often calculated using different metrics such as cosine similarity or Pearson correlation.
+            Item-Based Collaborative Filtering:
+
+            In this approach, the system recommends items similar to those that a user has liked or interacted with in the past.
+            It identifies items that are similar to the ones the target user has shown interest in and recommends them.
+            Similarity between items is also calculated using metrics like cosine similarity or Pearson correlation.
+                        """)
+            
+            tab_a1_mat, tab_a1_dl = st.tabs(["Matrix Factorization","Deep learning based"])
+            with tab_a1_mat:
+                st.markdown("#### About:")
+            with tab_a1_dl:
+                st.markdown("#### About:")
+
+
+        with tab_a2:
+            st.markdown("#### Introduction:")
+            st.markdown("""
+                        Content-based filtering is another approach used in recommendation systems, and it relies on the characteristics or features of items and users to make recommendations. Unlike collaborative filtering, content-based filtering doesn't require information about the preferences or behaviors of other users. Instead, it focuses on the properties of items and the explicit profile of the user.
+                        """)
+        with tab_a3: 
+            st.markdown("#### Introduction:") 
+            st.markdown("""
+                        A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
+                        """)
+                     
 
 if __name__ == "__main__":
     main()
