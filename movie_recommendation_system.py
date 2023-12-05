@@ -94,7 +94,11 @@ def app_content():
             tab_a1_mat, tab_a1_dl = st.tabs(
                 ["Matrix Factorization", "Deep learning based"])
             with tab_a1_mat:
-                st.markdown("#### About:")
+                st.markdown("""Matrix factorization involves breaking down the problem into subsections to discover hidden features in the data. 
+                            Here, the matrix containing users in the rows and movies in the columns is broken down into two matrices. 
+                            The two matrices reveal different patterns in the data. One matrix might reveal the explicit features like how much a user likes the movie and the other matrix might reveal hidden features in the data. The two matrices when aggregated together will give the original matrix. 
+                            This optimization of the two matrices is done iteratively through gradient descent or other optimization algorithms. 
+                            The final matrices capture different features of the data which is used to generate the recommendations.""")
                 st.markdown("#### Top 10 Recommendations (for User ID = " +
                             str(user_id)+") are:  ")
                 colab_matrix_fact = pd.read_csv("colab_matrix_fact.csv")
