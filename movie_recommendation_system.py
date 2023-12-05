@@ -16,7 +16,7 @@ def main():
     if not is_logged_in:
         st.title("Movie Recommendation System")
 
-        username = st.text_input("User ID:", value="5")
+        username = st.text_input("User ID:", value="9")
         password = st.text_input(
             "Password:", type="password", value="password")
 
