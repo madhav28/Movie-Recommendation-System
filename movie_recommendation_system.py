@@ -1,5 +1,8 @@
 import streamlit as st
 
+if 'user_id' not in st.session_state:
+    st.session_state.user_id = None
+
 
 def login(username, password):
     return username >= 1 and username <= 10 and password == "password"
@@ -19,8 +22,8 @@ def main():
         login_button_clicked = st.button("Login")
 
         if login_button_clicked:
-            user_id = int(username)
-            if login(user_id, password):
+            st.session_state.user_id = username
+            if login(int(username), password):
                 st.success("Login successful!")
                 st.session_state.is_logged_in = True
                 st.experimental_rerun()
@@ -36,6 +39,8 @@ def main():
 
 
 def app_content():
+    user_id = st.session_state.user_id
+
     st.title("Movie Recommendation System")
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction', 'Data Visualisation',
