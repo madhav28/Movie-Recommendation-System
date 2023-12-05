@@ -1,4 +1,8 @@
 import streamlit as st
+import pandas as pd
+
+if 'user_id' not in st.session_state:
+    st.session_state.user_id = None
 
 
 def login(username, password):
@@ -19,8 +23,8 @@ def main():
         login_button_clicked = st.button("Login")
 
         if login_button_clicked:
-            user_id = int(username)
-            if login(user_id, password):
+            st.session_state.user_id = int(username)
+            if login(int(username), password):
                 st.success("Login successful!")
                 st.session_state.is_logged_in = True
                 st.experimental_rerun()
@@ -36,6 +40,8 @@ def main():
 
 
 def app_content():
+    user_id = st.session_state.user_id
+
     st.title("Movie Recommendation System")
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction', 'Data Visualisation',
@@ -89,6 +95,25 @@ def app_content():
                 ["Matrix Factorization", "Deep learning based"])
             with tab_a1_mat:
                 st.markdown("#### About:")
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
+                colab_matrix_fact = pd.read_csv("colab_matrix_fact.csv")
+                colab_matrix_fact = colab_matrix_fact[colab_matrix_fact['users'] == user_id]
+                recommendations = {}
+                top_10 = []
+                for column in colab_matrix_fact.columns:
+                    if column == 'users':
+                        continue
+                    top_10.append(colab_matrix_fact[column].ravel()[0])
+
+                recommendations = {"Movie Recommendation": top_10}
+                recommendations = pd.DataFrame(recommendations)
+                recommendations.set_index(pd.RangeIndex(
+                    start=1, stop=11, step=1), inplace=True)
+                recommendations = recommendations.rename_axis('#')
+
+                st.dataframe(recommendations)
+
             with tab_a1_dl:
                 st.markdown("#### About:")
 
