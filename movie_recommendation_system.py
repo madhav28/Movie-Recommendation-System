@@ -116,6 +116,24 @@ def app_content():
 
             with tab_a1_dl:
                 st.markdown("#### About:")
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
+                colab_dl = pd.read_csv("colab_dl.csv")
+                colab_dl = colab_dl[colab_dl['user_id'] == user_id]
+                recommendations = {}
+                top_10 = []
+                for column in colab_dl.columns:
+                    if column == 'user_id':
+                        continue
+                    top_10.append(colab_dl[column].ravel()[0])
+
+                recommendations = {"Movie Recommendation": top_10}
+                recommendations = pd.DataFrame(recommendations)
+                recommendations.set_index(pd.RangeIndex(
+                    start=1, stop=11, step=1), inplace=True)
+                recommendations = recommendations.rename_axis('#')
+
+                st.dataframe(recommendations)
 
         with tab_a2:
             st.markdown("""
