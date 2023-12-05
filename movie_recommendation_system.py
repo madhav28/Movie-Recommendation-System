@@ -143,7 +143,25 @@ def app_content():
             st.markdown("""
                         A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
                         """)
-            
+            st.markdown("#### Top 10 Recommendations (for User ID = " +
+                        str(user_id)+") are:  ")
+            hybrid = pd.read_csv("hybrid.csv")
+            hybrid = hybrid[hybrid['user_id'] == user_id]
+            recommendations = {}
+            top_10 = []
+            for column in hybrid.columns:
+                if column == 'user_id':
+                    continue
+                top_10.append(hybrid[column].ravel()[0])
+
+            recommendations = {"Movie Recommendation": top_10}
+            recommendations = pd.DataFrame(recommendations)
+            recommendations.set_index(pd.RangeIndex(
+                start=1, stop=11, step=1), inplace=True)
+            recommendations = recommendations.rename_axis('#')
+
+            st.dataframe(recommendations)
+
         with tab4:
             st.markdown("""
                         
@@ -151,7 +169,6 @@ def app_content():
                         The performance of the movie prediction models was rigorously evaluated using RMSE (Root Mean Square Error) as the benchmark metric, comparing true ratings against predicted ratings. The following is a summary of the results:
                         """)
             st.image("rmse_scores.png")
-
 
             st.markdown("""
                         #### Comparative Analysis:
@@ -167,7 +184,7 @@ def app_content():
                         - **Data Sparsity:** Matrix factorization and collaborative filtering models may encounter challenges in sparse datasets where user-item interactions are limited.
                         - **Interpretability:** Deep learning models, while powerful, often lack interpretability, making it challenging to explain recommendations to users.
                         """)
-            
+
             st.markdown("""
                         ### Content-Based Filtering
                         Leveraging Natural Language Processing (NLP) for content-based filtering added an extra layer of sophistication to our movie recommendation system.
@@ -212,8 +229,7 @@ def app_content():
 
                         **User Feedback Integration:**\
                         Implement mechanisms for collecting and integrating user feedback to continually refine and improve recommendation algorithms based on user preferences.
-                        """)   
-
+                        """)
 
 
 if __name__ == "__main__":
