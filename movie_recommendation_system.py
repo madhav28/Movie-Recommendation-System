@@ -119,7 +119,6 @@ def app_content():
                 st.dataframe(recommendations)
 
             with tab_a1_dl:
-                st.markdown("#### About:")
                 st.markdown("#### Top 10 Recommendations (for User ID = " +
                             str(user_id)+") are:  ")
                 colab_dl = pd.read_csv("colab_dl.csv")
@@ -143,7 +142,7 @@ def app_content():
             st.markdown("""
                         Content-based filtering is another approach used in recommendation systems, and it relies on the characteristics or features of items and users to make recommendations. Unlike collaborative filtering, content-based filtering doesn't require information about the preferences or behaviors of other users. Instead, it focuses on the properties of items and the explicit profile of the user.
                         """)
-            
+
             st.markdown("""
 
                         ### Content-Based Prediction Using NLP:
@@ -161,6 +160,24 @@ def app_content():
                         Utilize cosine similarity to measure the similarity between user and movie embeddings.
                         Recommend movies with the highest cosine similarity scores, aligning with user preferences.
                         """)
+            st.markdown("#### Top 10 Recommendations (for User ID = " +
+                        str(user_id)+") are:  ")
+            content_nlp = pd.read_csv("content_nlp.csv")
+            content_nlp = content_nlp[content_nlp['user_id'] == user_id]
+            recommendations = {}
+            top_10 = []
+            for column in content_nlp.columns:
+                if column == 'user_id':
+                    continue
+                top_10.append(content_nlp[column].ravel()[0])
+
+            recommendations = {"Movie Recommendation": top_10}
+            recommendations = pd.DataFrame(recommendations)
+            recommendations.set_index(pd.RangeIndex(
+                start=1, stop=11, step=1), inplace=True)
+            recommendations = recommendations.rename_axis('#')
+
+            st.dataframe(recommendations)
 
         with tab_a3:
             st.markdown("""
