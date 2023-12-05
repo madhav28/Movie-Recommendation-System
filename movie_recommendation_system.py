@@ -2,7 +2,7 @@ import streamlit as st
 
 
 def login(username, password):
-    return username == "username" and password == "password"
+    return username >= 1 and username <= 10 and password == "password"
 
 
 def main():
@@ -12,14 +12,15 @@ def main():
     if not is_logged_in:
         st.title("Movie Recommendation System")
 
-        username = st.text_input("Username:", value="username")
+        username = st.text_input("User ID:", value="5")
         password = st.text_input(
             "Password:", type="password", value="password")
 
         login_button_clicked = st.button("Login")
 
         if login_button_clicked:
-            if login(username, password):
+            user_id = int(username)
+            if login(user_id, password):
                 st.success("Login successful!")
                 st.session_state.is_logged_in = True
                 st.experimental_rerun()
