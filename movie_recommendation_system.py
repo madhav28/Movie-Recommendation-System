@@ -95,8 +95,8 @@ def app_content():
                 ["Matrix Factorization", "Deep learning based"])
             with tab_a1_mat:
                 st.markdown("#### About:")
-                st.markdown("#### Top 10 Recommendations for User " +
-                            str(user_id)+":  ")
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
                 colab_matrix_fact = pd.read_csv("colab_matrix_fact.csv")
                 colab_matrix_fact = colab_matrix_fact[colab_matrix_fact['users'] == user_id]
                 recommendations = {}
