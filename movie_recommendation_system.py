@@ -100,6 +100,77 @@ def app_content():
             st.markdown("""
                         A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
                         """)
+            
+        with tab4:
+            st.markdown("""
+                        
+                        ### Collaborative Filtering:
+                        The performance of the movie prediction models was rigorously evaluated using RMSE (Root Mean Square Error) as the benchmark metric, comparing true ratings against predicted ratings. The following is a summary of the results:
+                        """)
+            st.image("rmse_scores.png")
+
+
+            st.markdown("""
+                        #### Comparative Analysis:
+                        In comparing these models, a few trends and patterns surfaced. Traditional collaborative filtering methods, such as user-based and item-based, struggled with scalability and sparsity issues, limiting their effectiveness. Matrix factorization provided a more nuanced approach by capturing latent factors, yet it fell short in addressing the complexities of diverse user preferences.
+
+                        Deep learning models, on the other hand, exhibited superior performance. The intricate architectures allowed them to grasp subtle relationships, resulting in more accurate predictions. However, the computational demands and potential overfitting challenges should be carefully considered.
+                        
+                        #### Possible Problems:
+                        Despite the advancements, certain challenges persist:
+
+                        - **Cold Start Problem:** All collaborative filtering methods may struggle with new or rarely-rated items and users.
+                        - **Scalability:** User-based collaborative filtering faces scalability issues with a growing user base.
+                        - **Data Sparsity:** Matrix factorization and collaborative filtering models may encounter challenges in sparse datasets where user-item interactions are limited.
+                        - **Interpretability:** Deep learning models, while powerful, often lack interpretability, making it challenging to explain recommendations to users.
+                        """)
+            
+            st.markdown("""
+                        ### Content-Based Filtering
+                        Leveraging Natural Language Processing (NLP) for content-based filtering added an extra layer of sophistication to our movie recommendation system.
+
+                        **Effectiveness of NLP Features:**\
+                        The NLP-based content filtering method proved effective in extracting semantic information from textual data. This allowed the model to capture subtle nuances in movie content and recommend films that align more closely with users' preferences.
+                        
+                        **Consideration of Genres:**\
+                        By incorporating genres and themes extracted through NLP, the model exhibited a nuanced understanding of user preferences beyond numerical ratings. This is particularly beneficial when users have diverse tastes that extend beyond traditional collaborative filtering signals.
+                        
+                        **User-Generated Tags:**\
+                        The inclusion of user-generated tags further enriched the content-based approach, allowing the model to incorporate real-time, user-contributed descriptors. This dynamic aspect adds a layer of relevance that static metadata may lack.
+                        
+                        #### Comparative Analysis:
+                        In comparison to collaborative filtering methods, the NLP-based content filtering method showcased competitive performance. It proved particularly effective in scenarios where traditional collaborative filtering faced challenges, such as sparse datasets and the cold start problem.
+
+                        #### Possible Problems:
+                        Despite its strengths, the content-based method using NLP is not without potential challenges:
+
+                        - **Limited Coverage:** If movie descriptions are sparse or lack informative content, the model might struggle to generate meaningful recommendations.
+                        - **Dependency on Textual Data Quality:** The quality of NLP features heavily depends on the richness and accuracy of textual data. Inaccuracies or biases in the data could impact recommendation quality.
+
+                        """)
+
+        with tab5:
+            st.markdown("""
+                        ## Conclusion:
+                        In conclusion, the project has successfully developed and implemented a robust movie prediction system, leveraging collaborative filtering and Content-Based filtering techniques. The evaluation results showcase the effectiveness of deep learning models, closely followed by matrix factorization, in accurately predicting user ratings for movies. The algorithm has demonstrated the ability to provide recommendations that align well with human suggestions.
+
+                        The incorporation of features such as similar movies, genres, and popularity has enhanced the algorithm's recommendation capabilities. The decision to train the models on the entire dataset has proven fruitful, contributing to improved accuracy on the test set.
+
+                        The project marks a significant step forward in personalized movie recommendations, creating a user-friendly application that harnesses the power of collaborative filtering to enhance the movie-watching experience.
+
+                        ## Future Works:
+                        While the current models have shown promising results, there are several avenues for future improvements and enhancements:
+
+                        **Real-Time Recommendations:**\
+                        Develop algorithms for real-time adaptation to changing user preferences, ensuring dynamic and personalized movie recommendations.
+
+                        **Interpretability:**\
+                        Enhance model interpretability to provide users with clear insights into the rationale behind movie recommendations.
+
+                        **User Feedback Integration:**\
+                        Implement mechanisms for collecting and integrating user feedback to continually refine and improve recommendation algorithms based on user preferences.
+                        """)   
+
 
 
 if __name__ == "__main__":
