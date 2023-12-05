@@ -143,6 +143,25 @@ def app_content():
             st.markdown("""
                         Content-based filtering is another approach used in recommendation systems, and it relies on the characteristics or features of items and users to make recommendations. Unlike collaborative filtering, content-based filtering doesn't require information about the preferences or behaviors of other users. Instead, it focuses on the properties of items and the explicit profile of the user.
                         """)
+            
+            st.markdown("""
+
+                        ### Content-Based Prediction Using NLP:
+
+                        **Word2Vec Training:**\
+                        Tokenize movie tags and train a Word2Vec model with specified parameters, such as vector size and window size. This process generates embeddings that capture semantic relationships within the textual content.
+
+                        **Movie Embeddings:**\
+                        Compute unique embeddings for each movie using the trained Word2Vec model. These embeddings represent the semantic content of the movies.
+
+                        **User Embeddings:**\
+                        Determine user embeddings by aggregating the embeddings of rated movies, reflecting individual preferences in the Word2Vec space.
+
+                        **Cosine Similarity for Recommendations:**\
+                        Utilize cosine similarity to measure the similarity between user and movie embeddings.
+                        Recommend movies with the highest cosine similarity scores, aligning with user preferences.
+                        """)
+
         with tab_a3:
             st.markdown("""
                         A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
