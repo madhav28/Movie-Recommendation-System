@@ -6,7 +6,7 @@ if 'user_id' not in st.session_state:
 
 
 def login(username, password):
-    return username >= 1 and username <= 10 and password == "password"
+    return username >= 1 and username <= 10
 
 
 def main():
@@ -77,9 +77,7 @@ def app_content():
             st.markdown("""
                         Collaborative filtering is a technique used in recommendation systems to predict a user's preferences or interests by leveraging the preferences and behaviors of a group of users. The underlying idea is that users who have agreed in the past on certain issues tend to agree again in the future. This method assumes that if a user A has similar preferences to a user B on a certain issue, A is more likely to share B's preferences on a different issue as well.
 
-            There are two main types of collaborative filtering: user-based and item-based.
-
-            User-Based Collaborative Filtering:
+            **User-Based Collaborative Filtering:**
 
             This approach recommends items to a target user based on the preferences and behavior of users who are similar to that target user.
             The system identifies users with similar preferences to the target user and recommends items that those similar users have liked or interacted with.
@@ -92,13 +90,26 @@ def app_content():
                         """)
 
             tab_a1_mat, tab_a1_dl = st.tabs(
-                ["Matrix Factorization", "Deep learning based"])
+                ["Matrix Factorization", "Deep Learning Based"])
             with tab_a1_mat:
-                st.markdown("""Matrix factorization involves breaking down the problem into subsections to discover hidden features in the data. 
-                            Here, the matrix containing users in the rows and movies in the columns is broken down into two matrices. 
-                            The two matrices reveal different patterns in the data. One matrix might reveal the explicit features like how much a user likes the movie and the other matrix might reveal hidden features in the data. The two matrices when aggregated together will give the original matrix. 
-                            This optimization of the two matrices is done iteratively through gradient descent or other optimization algorithms. 
-                            The final matrices capture different features of the data which is used to generate the recommendations.""")
+                st.markdown("#### Matrix Factorization:")
+                st.markdown("""Matrix factorization stands out as a widely used technique for collaborative filtering. 
+                            The fundamental concept involves breaking down the user-item matrix into two matrices with lower ranks: one depicting user preferences and the other reflecting movie characteristics. 
+                            The reconstruction of the original user-item matrix is accomplished by computing the dot product of these two matrices.""")
+                st.markdown("""The user-item matrix features rows corresponding to users and columns corresponding to movies. 
+                            The matrix entries denote the ratings provided by users for the respective movies. 
+                            Typically, this matrix is sparse, given that each user tends to rate only a small portion of the available movies.""")
+                st.image("matrix_fact_img.png")
+                st.markdown("""The goal of matrix factorization is to decompose the user-item matrix R into two lower-rank matrices, P and Q, with their product closely approximating R. 
+                            Matrix P signifies user’s preferences, while matrix Q signifies items' characteristics. 
+                            Each row in matrix P is a vector representing a user's preferences, and each row in matrix Q is a vector representing an item's characteristics. 
+                            This approach allows for a meaningful representation of user-item interactions in terms of preferences and characteristics.""")
+                st.markdown("""This method aims to discover matrices P and Q that minimize the discrepancy between the approximated matrix and the real matrix. 
+                            Typically, this disparity is gauged through the root mean squared error (RMSE) between the predicted ratings and the actual ratings.""")
+                st.markdown("""In this project, the SVD (Singular Value Decomposition) technique is incorporated for matrix factorization using the Surprise library in Python. 
+                            SVD is a linear algebra technique used for matrix factorization. 
+                            In the context of collaborative filtering, it helps decompose the user-item matrix into three matrices (P, Σ, Q^T), where P represents user preferences, Σ is a diagonal matrix of singular values, and Q^T represents movie characteristics.""")
+                st.markdown("---")
                 st.markdown("#### Top 10 Recommendations (for User ID = " +
                             str(user_id)+") are:  ")
                 colab_matrix_fact = pd.read_csv("colab_matrix_fact.csv")
@@ -119,6 +130,19 @@ def app_content():
                 st.dataframe(recommendations)
 
             with tab_a1_dl:
+                st.markdown("#### Deep Learning Based:")
+                st.markdown("""Deep Neural Network (DNN) models provide a promising solution for addressing challenges like the cold start problem and improving the relevance of recommendations. 
+                            The flexibility of the input layer in DNNs allows for the incorporation of user and movie features, enabling a more nuanced understanding of user preferences and enhancing the relevance of recommendations.""")
+                st.markdown("""In this project, Deep Neural Networks are employed for movie recommendations. 
+                            Users and movies undergo one-hot encoding and are then input into the Deep Neural Network as distinct inputs, with the ratings being generated as the output.""")
+                st.markdown("""The construction of the Deep Neural Network model involved extracting the latent features of users and movies using Embedding layers. 
+                            Subsequently, Dense layers with dropout mechanisms were stacked, followed by the addition of a final Dense layer comprising 9 neurons (representing each rating from 1 to 5) and incorporating a Softmax activation function. 
+                            For the optimization algorithm, it was decided to use SGD and Sparse Categorical Cross Entropy for the loss function.""")
+                st.image("dl_img.png")
+                st.markdown("""The workflow involves users inputting their ID, extracting unseen movies, and utilizing a DNN model that takes user and movie IDs to predict ratings. 
+                         The model's predictions are normalized and used to identify movies likely to interest the user, without converting ratings back to the original scale. 
+                         The DNN model is thus a valuable tool for predicting user preferences for unseen movies.""")
+                st.markdown("---")
                 st.markdown("#### Top 10 Recommendations (for User ID = " +
                             str(user_id)+") are:  ")
                 colab_dl = pd.read_csv("colab_dl.csv")
@@ -160,6 +184,7 @@ def app_content():
                         Utilize cosine similarity to measure the similarity between user and movie embeddings.
                         Recommend movies with the highest cosine similarity scores, aligning with user preferences.
                         """)
+            st.markdown("---")
             st.markdown("#### Top 10 Recommendations (for User ID = " +
                         str(user_id)+") are:  ")
             content_nlp = pd.read_csv("content_nlp.csv")
@@ -180,6 +205,7 @@ def app_content():
             st.dataframe(recommendations)
 
         with tab_a3:
+            st.markdown("#### Hybrid Recommendation System:")
             st.markdown("""
                         A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
                         """)
@@ -194,6 +220,7 @@ def app_content():
                         Next, all the users who rated at least 60% (hyperparameter) of the previous list of movies and who have a correlation of at least 0.75 are identified. 
                         After that, this list of similar users is used to estimate the weighted average rating of the movies. 
                         Finally, top movies with the highest weighted average rating are identified as the potential recommendations to the user.""")
+            st.markdown("---")
             st.markdown("#### Top 10 Recommendations (for User ID = " +
                         str(user_id)+") are:  ")
             hybrid = pd.read_csv("hybrid.csv")
