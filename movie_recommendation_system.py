@@ -272,9 +272,9 @@ def app_content():
                         ## Future Works:
                         While the current models have shown promising results, there are several avenues for future improvements and enhancements:
 
-                        **Real-Time Recommendations:**\
-                        Develop algorithms for real-time adaptation to changing user preferences, ensuring dynamic and personalized movie recommendations.
-
+                        **Incorporating temporal factors:**\
+                        Considering how movie trends and audience preferences evolve over time. By accounting for temporal aspects such as changing graphics quality or narrative styles across decades, the system could further refine its recommendations, ensuring they remain relevant and appealing to users amidst evolving cinematic landscapes.
+                        
                         **Interpretability:**\
                         Enhance model interpretability to provide users with clear insights into the rationale behind movie recommendations.
 
