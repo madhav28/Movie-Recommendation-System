@@ -183,6 +183,17 @@ def app_content():
             st.markdown("""
                         A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
                         """)
+            st.markdown("#### Methodology:")
+            st.markdown("""Hybrid recommendation is developed as an ensemble model of item-based and user-based recommendation systems. 
+                        To develop these recommendation systems, a data matrix with rows as user, columns as movies and values as ratings is constructed. 
+                        In this model, both item-based and user-based similarities are used for movie recommendations. 
+                        The approaches used for identifying item-based similarities and user-based similarities are described below.""")
+            st.markdown("""For **item-based** similarity, initially, the user's most recent favorite movie is identified. 
+                        Later, using the data matrix, movies which are strongly correlated with this favorite movie are identified as potential recommendations to the user. """)
+            st.markdown("""For user-based similarity, initially, a list of movies rated by the user is found. 
+                        Next, all the users who rated at least 60% (hyperparameter) of the previous list of movies and who have a correlation of at least 0.75 are identified. 
+                        After that, this list of similar users is used to estimate the weighted average rating of the movies. 
+                        Finally, top movies with the highest weighted average rating are identified as the potential recommendations to the user.""")
             st.markdown("#### Top 10 Recommendations (for User ID = " +
                         str(user_id)+") are:  ")
             hybrid = pd.read_csv("hybrid.csv")
