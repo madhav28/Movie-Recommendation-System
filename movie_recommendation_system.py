@@ -6,7 +6,7 @@ if 'user_id' not in st.session_state:
 
 
 def login(username, password):
-    return username >= 1 and username <= 10
+    return username >= 1 and username <= 162541
 
 
 def main():
@@ -16,7 +16,8 @@ def main():
     if not is_logged_in:
         st.title("Movie Recommendation System")
 
-        username = st.text_input("User ID:", value="9")
+        username = st.text_input(
+            "Enter a User ID from 1 to 162541:", value="9")
         password = st.text_input(
             "Password:", type="password", value="password")
 
@@ -29,7 +30,7 @@ def main():
                 st.session_state.is_logged_in = True
                 st.experimental_rerun()
             else:
-                st.error("Login failed. Please try again.")
+                st.error("Please enter a User ID from 1 to 162541!")
     else:
         col1, col2 = st.columns([4, 1])
 
@@ -44,9 +45,9 @@ def app_content():
 
     st.title("Movie Recommendation System")
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction', 'Data Visualisation',
-                                            'Algorithms', 'Results and Discussion',
-                                            'Conclusion and Future Work'])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Introduction', 'Dataset', 'Data Visualisation',
+                                                  'Algorithms', 'Results and Discussion',
+                                                  'Conclusion and Future Work'])
 
     with tab1:
         st.markdown("#### Problem Definition:")
@@ -61,16 +62,23 @@ def app_content():
             "Movie Lens 25M Dataset - https://grouplens.org/datasets/movielens/25m/")
 
     with tab2:
+        st.markdown("""Three datasets are used in this project: ratings.csv, movies.csv and tags.csv. 
+                    The features of each dataset are described below:""")
+        st.image("data_and_features.png")
+        st.markdown("""The tags.csv file was used only to develop a content-based NLP recommendation system. 
+                    The ratings.csv and movies.csv files were used to develop all other recommendation systems.""")
+
+    with tab3:
         st.markdown("#### Distributions for Movies:")
         st.image("movie_release.png")
         st.image("movie_genres.png")
-        st.markdown("#### Distributions for Movie Rating:")
+        st.markdown("#### Distributions for Movie Ratings:")
         st.image("average_rating.png")
         st.image("movie_rating_rel.png")
         st.image("movie_rating_genre.png")
         st.image("most_rated_movies.png")
 
-    with tab3:
+    with tab4:
         tab_a1, tab_a2, tab_a3 = st.tabs(["Collaborative Filtering",
                                           "Content-Based Filtering", "Hybrid"])
         with tab_a1:
@@ -143,24 +151,29 @@ def app_content():
                          The model's predictions are normalized and used to identify movies likely to interest the user, without converting ratings back to the original scale. 
                          The DNN model is thus a valuable tool for predicting user preferences for unseen movies.""")
                 st.markdown("---")
-                st.markdown("#### Top 10 Recommendations (for User ID = " +
-                            str(user_id)+") are:  ")
-                colab_dl = pd.read_csv("colab_dl.csv")
-                colab_dl = colab_dl[colab_dl['user_id'] == user_id]
-                recommendations = {}
-                top_10 = []
-                for column in colab_dl.columns:
-                    if column == 'user_id':
-                        continue
-                    top_10.append(colab_dl[column].ravel()[0])
+                if user_id >= 1 and user_id <= 10:
+                    st.markdown("#### Top 10 Recommendations (for User ID = " +
+                                str(user_id)+") are:  ")
+                    colab_dl = pd.read_csv("colab_dl.csv")
+                    colab_dl = colab_dl[colab_dl['user_id'] == user_id]
+                    recommendations = {}
+                    top_10 = []
+                    for column in colab_dl.columns:
+                        if column == 'user_id':
+                            continue
+                        top_10.append(colab_dl[column].ravel()[0])
 
-                recommendations = {"Movie Recommendation": top_10}
-                recommendations = pd.DataFrame(recommendations)
-                recommendations.set_index(pd.RangeIndex(
-                    start=1, stop=11, step=1), inplace=True)
-                recommendations = recommendations.rename_axis('#')
+                    recommendations = {"Movie Recommendation": top_10}
+                    recommendations = pd.DataFrame(recommendations)
+                    recommendations.set_index(pd.RangeIndex(
+                        start=1, stop=11, step=1), inplace=True)
+                    recommendations = recommendations.rename_axis('#')
 
-                st.dataframe(recommendations)
+                    st.dataframe(recommendations)
+                else:
+                    st.error(
+                        """Due to limitations on computational resources, movie recommendations were generated for only the first 10 users using this model. 
+                        Please login using a User ID from 1 to 10 to view the recommendations provided by this model.""")
 
         with tab_a2:
             st.markdown("""
@@ -185,24 +198,29 @@ def app_content():
                         Recommend movies with the highest cosine similarity scores, aligning with user preferences.
                         """)
             st.markdown("---")
-            st.markdown("#### Top 10 Recommendations (for User ID = " +
-                        str(user_id)+") are:  ")
-            content_nlp = pd.read_csv("content_nlp.csv")
-            content_nlp = content_nlp[content_nlp['user_id'] == user_id]
-            recommendations = {}
-            top_10 = []
-            for column in content_nlp.columns:
-                if column == 'user_id':
-                    continue
-                top_10.append(content_nlp[column].ravel()[0])
+            if user_id >= 1 and user_id <= 100:
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
+                content_nlp = pd.read_csv("content_nlp.csv")
+                content_nlp = content_nlp[content_nlp['user_id'] == user_id]
+                recommendations = {}
+                top_10 = []
+                for column in content_nlp.columns:
+                    if column == 'user_id':
+                        continue
+                    top_10.append(content_nlp[column].ravel()[0])
 
-            recommendations = {"Movie Recommendation": top_10}
-            recommendations = pd.DataFrame(recommendations)
-            recommendations.set_index(pd.RangeIndex(
-                start=1, stop=11, step=1), inplace=True)
-            recommendations = recommendations.rename_axis('#')
+                recommendations = {"Movie Recommendation": top_10}
+                recommendations = pd.DataFrame(recommendations)
+                recommendations.set_index(pd.RangeIndex(
+                    start=1, stop=11, step=1), inplace=True)
+                recommendations = recommendations.rename_axis('#')
 
-            st.dataframe(recommendations)
+                st.dataframe(recommendations)
+            else:
+                st.error(
+                    """Due to limitations on computational resources, movie recommendations were generated for only the first 100 users using this model. 
+                        Please login using a User ID from 1 to 100 to view the recommendations provided by this model.""")
 
         with tab_a3:
             st.markdown("#### Hybrid Recommendation System:")
@@ -221,26 +239,31 @@ def app_content():
                         After that, this list of similar users is used to estimate the weighted average rating of the movies. 
                         Finally, top movies with the highest weighted average rating are identified as the potential recommendations to the user.""")
             st.markdown("---")
-            st.markdown("#### Top 10 Recommendations (for User ID = " +
-                        str(user_id)+") are:  ")
-            hybrid = pd.read_csv("hybrid.csv")
-            hybrid = hybrid[hybrid['user_id'] == user_id]
-            recommendations = {}
-            top_10 = []
-            for column in hybrid.columns:
-                if column == 'user_id':
-                    continue
-                top_10.append(hybrid[column].ravel()[0])
+            if user_id >= 1 and user_id <= 10:
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
+                hybrid = pd.read_csv("hybrid.csv")
+                hybrid = hybrid[hybrid['user_id'] == user_id]
+                recommendations = {}
+                top_10 = []
+                for column in hybrid.columns:
+                    if column == 'user_id':
+                        continue
+                    top_10.append(hybrid[column].ravel()[0])
 
-            recommendations = {"Movie Recommendation": top_10}
-            recommendations = pd.DataFrame(recommendations)
-            recommendations.set_index(pd.RangeIndex(
-                start=1, stop=11, step=1), inplace=True)
-            recommendations = recommendations.rename_axis('#')
+                recommendations = {"Movie Recommendation": top_10}
+                recommendations = pd.DataFrame(recommendations)
+                recommendations.set_index(pd.RangeIndex(
+                    start=1, stop=11, step=1), inplace=True)
+                recommendations = recommendations.rename_axis('#')
 
-            st.dataframe(recommendations)
+                st.dataframe(recommendations)
+            else:
+                st.error(
+                    """Due to limitations on computational resources, movie recommendations were generated for only the first 10 users using this model. 
+                        Please login using a User ID from 1 to 10 to view the recommendations provided by this model.""")
 
-        with tab4:
+        with tab5:
             st.markdown("""
                         
                         ### Collaborative Filtering:
@@ -287,7 +310,7 @@ def app_content():
 
                         """)
 
-        with tab5:
+        with tab6:
             st.markdown("""
                         ## Conclusion:
                         In conclusion, the project has successfully developed and implemented a robust movie prediction system, leveraging collaborative filtering and Content-Based filtering techniques. The evaluation results showcase the effectiveness of deep learning models, closely followed by matrix factorization, in accurately predicting user ratings for movies. The algorithm has demonstrated the ability to provide recommendations that align well with human suggestions.
