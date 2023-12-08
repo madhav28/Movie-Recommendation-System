@@ -6,7 +6,7 @@ if 'user_id' not in st.session_state:
 
 
 def login(username, password):
-    return username >= 1 and username <= 10 and password == "password"
+    return username >= 1 and username <= 162541
 
 
 def main():
@@ -16,7 +16,8 @@ def main():
     if not is_logged_in:
         st.title("Movie Recommendation System")
 
-        username = st.text_input("User ID:", value="5")
+        username = st.text_input(
+            "Enter a User ID from 1 to 162541:", value="9")
         password = st.text_input(
             "Password:", type="password", value="password")
 
@@ -29,7 +30,7 @@ def main():
                 st.session_state.is_logged_in = True
                 st.experimental_rerun()
             else:
-                st.error("Login failed. Please try again.")
+                st.error("Please enter a User ID from 1 to 162541!")
     else:
         col1, col2 = st.columns([4, 1])
 
@@ -44,9 +45,9 @@ def app_content():
 
     st.title("Movie Recommendation System")
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction', 'Data Visualisation',
-                                            'Algorithms', 'Results and Discussion',
-                                            'Conclusion and Future Work'])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['Introduction', 'Dataset', 'Data Visualisation',
+                                                  'Algorithms', 'Results and Discussion',
+                                                  'Conclusion and Future Work'])
 
     with tab1:
         st.markdown("#### Problem Definition:")
@@ -61,25 +62,30 @@ def app_content():
             "Movie Lens 25M Dataset - https://grouplens.org/datasets/movielens/25m/")
 
     with tab2:
+        st.markdown("""Three datasets are used in this project: ratings.csv, movies.csv and tags.csv. 
+                    The features of each dataset are described below:""")
+        st.image("data_and_features.png")
+        st.markdown("""The tags.csv file was used only to develop a content-based NLP recommendation system. 
+                    The ratings.csv and movies.csv files were used to develop all other recommendation systems.""")
+
+    with tab3:
         st.markdown("#### Distributions for Movies:")
         st.image("movie_release.png")
         st.image("movie_genres.png")
-        st.markdown("#### Distributions for Movie Rating:")
+        st.markdown("#### Distributions for Movie Ratings:")
         st.image("average_rating.png")
         st.image("movie_rating_rel.png")
         st.image("movie_rating_genre.png")
         st.image("most_rated_movies.png")
 
-    with tab3:
+    with tab4:
         tab_a1, tab_a2, tab_a3 = st.tabs(["Collaborative Filtering",
                                           "Content-Based Filtering", "Hybrid"])
         with tab_a1:
             st.markdown("""
                         Collaborative filtering is a technique used in recommendation systems to predict a user's preferences or interests by leveraging the preferences and behaviors of a group of users. The underlying idea is that users who have agreed in the past on certain issues tend to agree again in the future. This method assumes that if a user A has similar preferences to a user B on a certain issue, A is more likely to share B's preferences on a different issue as well.
 
-            There are two main types of collaborative filtering: user-based and item-based.
-
-            User-Based Collaborative Filtering:
+            **User-Based Collaborative Filtering:**
 
             This approach recommends items to a target user based on the preferences and behavior of users who are similar to that target user.
             The system identifies users with similar preferences to the target user and recommends items that those similar users have liked or interacted with.
@@ -92,9 +98,26 @@ def app_content():
                         """)
 
             tab_a1_mat, tab_a1_dl = st.tabs(
-                ["Matrix Factorization", "Deep learning based"])
+                ["Matrix Factorization", "Deep Learning Based"])
             with tab_a1_mat:
-                st.markdown("#### About:")
+                st.markdown("#### Matrix Factorization:")
+                st.markdown("""Matrix factorization stands out as a widely used technique for collaborative filtering. 
+                            The fundamental concept involves breaking down the user-item matrix into two matrices with lower ranks: one depicting user preferences and the other reflecting movie characteristics. 
+                            The reconstruction of the original user-item matrix is accomplished by computing the dot product of these two matrices.""")
+                st.markdown("""The user-item matrix features rows corresponding to users and columns corresponding to movies. 
+                            The matrix entries denote the ratings provided by users for the respective movies. 
+                            Typically, this matrix is sparse, given that each user tends to rate only a small portion of the available movies.""")
+                st.image("matrix_fact_img.png")
+                st.markdown("""The goal of matrix factorization is to decompose the user-item matrix R into two lower-rank matrices, P and Q, with their product closely approximating R. 
+                            Matrix P signifies user’s preferences, while matrix Q signifies items' characteristics. 
+                            Each row in matrix P is a vector representing a user's preferences, and each row in matrix Q is a vector representing an item's characteristics. 
+                            This approach allows for a meaningful representation of user-item interactions in terms of preferences and characteristics.""")
+                st.markdown("""This method aims to discover matrices P and Q that minimize the discrepancy between the approximated matrix and the real matrix. 
+                            Typically, this disparity is gauged through the root mean squared error (RMSE) between the predicted ratings and the actual ratings.""")
+                st.markdown("""In this project, the SVD (Singular Value Decomposition) technique is incorporated for matrix factorization using the Surprise library in Python. 
+                            SVD is a linear algebra technique used for matrix factorization. 
+                            In the context of collaborative filtering, it helps decompose the user-item matrix into three matrices (P, Σ, Q^T), where P represents user preferences, Σ is a diagonal matrix of singular values, and Q^T represents movie characteristics.""")
+                st.markdown("---")
                 st.markdown("#### Top 10 Recommendations (for User ID = " +
                             str(user_id)+") are:  ")
                 colab_matrix_fact = pd.read_csv("colab_matrix_fact.csv")
@@ -115,13 +138,48 @@ def app_content():
                 st.dataframe(recommendations)
 
             with tab_a1_dl:
-                st.markdown("#### About:")
+                st.markdown("#### Deep Learning Based:")
+                st.markdown("""Deep Neural Network (DNN) models provide a promising solution for addressing challenges like the cold start problem and improving the relevance of recommendations. 
+                            The flexibility of the input layer in DNNs allows for the incorporation of user and movie features, enabling a more nuanced understanding of user preferences and enhancing the relevance of recommendations.""")
+                st.markdown("""In this project, Deep Neural Networks are employed for movie recommendations. 
+                            Users and movies undergo one-hot encoding and are then input into the Deep Neural Network as distinct inputs, with the ratings being generated as the output.""")
+                st.markdown("""The construction of the Deep Neural Network model involved extracting the latent features of users and movies using Embedding layers. 
+                            Subsequently, Dense layers with dropout mechanisms were stacked, followed by the addition of a final Dense layer comprising 9 neurons (representing each rating from 1 to 5) and incorporating a Softmax activation function. 
+                            For the optimization algorithm, it was decided to use SGD and Sparse Categorical Cross Entropy for the loss function.""")
+                st.image("dl_img.png")
+                st.markdown("""The workflow involves users inputting their ID, extracting unseen movies, and utilizing a DNN model that takes user and movie IDs to predict ratings. 
+                         The model's predictions are normalized and used to identify movies likely to interest the user, without converting ratings back to the original scale. 
+                         The DNN model is thus a valuable tool for predicting user preferences for unseen movies.""")
+                st.markdown("---")
+                if user_id >= 1 and user_id <= 10:
+                    st.markdown("#### Top 10 Recommendations (for User ID = " +
+                                str(user_id)+") are:  ")
+                    colab_dl = pd.read_csv("colab_dl.csv")
+                    colab_dl = colab_dl[colab_dl['user_id'] == user_id]
+                    recommendations = {}
+                    top_10 = []
+                    for column in colab_dl.columns:
+                        if column == 'user_id':
+                            continue
+                        top_10.append(colab_dl[column].ravel()[0])
+
+                    recommendations = {"Movie Recommendation": top_10}
+                    recommendations = pd.DataFrame(recommendations)
+                    recommendations.set_index(pd.RangeIndex(
+                        start=1, stop=11, step=1), inplace=True)
+                    recommendations = recommendations.rename_axis('#')
+
+                    st.dataframe(recommendations)
+                else:
+                    st.error(
+                        """Due to limitations on computational resources, movie recommendations were generated for only the first 10 users using this model. 
+                        Please login using a User ID from 1 to 10 to view the recommendations provided by this model.""")
 
         with tab_a2:
             st.markdown("""
                         Content-based filtering is another approach used in recommendation systems, and it relies on the characteristics or features of items and users to make recommendations. Unlike collaborative filtering, content-based filtering doesn't require information about the preferences or behaviors of other users. Instead, it focuses on the properties of items and the explicit profile of the user.
                         """)
-            
+
             st.markdown("""
 
                         ### Content-Based Prediction Using NLP:
@@ -140,14 +198,73 @@ def app_content():
                         Recommend movies with the highest cosine similarity scores, aligning with user preferences.
                         
                         """)
-            st.image("NLP_based_method.png")
+            st.markdown("---")
+            if user_id >= 1 and user_id <= 100:
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
+                content_nlp = pd.read_csv("content_nlp.csv")
+                content_nlp = content_nlp[content_nlp['user_id'] == user_id]
+                recommendations = {}
+                top_10 = []
+                for column in content_nlp.columns:
+                    if column == 'user_id':
+                        continue
+                    top_10.append(content_nlp[column].ravel()[0])
+
+                recommendations = {"Movie Recommendation": top_10}
+                recommendations = pd.DataFrame(recommendations)
+                recommendations.set_index(pd.RangeIndex(
+                    start=1, stop=11, step=1), inplace=True)
+                recommendations = recommendations.rename_axis('#')
+
+                st.dataframe(recommendations)
+            else:
+                st.error(
+                    """Due to limitations on computational resources, movie recommendations were generated for only the first 100 users using this model. 
+                        Please login using a User ID from 1 to 100 to view the recommendations provided by this model.""")
 
         with tab_a3:
+            st.markdown("#### Hybrid Recommendation System:")
             st.markdown("""
                         A hybrid recommendation system is an approach that combines multiple recommendation techniques to overcome the limitations of individual methods and provide more accurate and diverse recommendations. By leveraging the strengths of different recommendation algorithms, hybrid models aim to enhance overall performance and address challenges such as the cold start problem, sparsity of data, and the diversity of recommendations. 
                         """)
-            
-        with tab4:
+            st.markdown("#### Methodology:")
+            st.markdown("""Hybrid recommendation is developed as an ensemble model of item-based and user-based recommendation systems. 
+                        To develop these recommendation systems, a data matrix with rows as user, columns as movies and values as ratings is constructed. 
+                        In this model, both item-based and user-based similarities are used for movie recommendations. 
+                        The approaches used for identifying item-based similarities and user-based similarities are described below.""")
+            st.markdown("""For **item-based** similarity, initially, the user's most recent favorite movie is identified. 
+                        Later, using the data matrix, movies which are strongly correlated with this favorite movie are identified as potential recommendations to the user. """)
+            st.markdown("""For user-based similarity, initially, a list of movies rated by the user is found. 
+                        Next, all the users who rated at least 60% (hyperparameter) of the previous list of movies and who have a correlation of at least 0.75 are identified. 
+                        After that, this list of similar users is used to estimate the weighted average rating of the movies. 
+                        Finally, top movies with the highest weighted average rating are identified as the potential recommendations to the user.""")
+            st.markdown("---")
+            if user_id >= 1 and user_id <= 10:
+                st.markdown("#### Top 10 Recommendations (for User ID = " +
+                            str(user_id)+") are:  ")
+                hybrid = pd.read_csv("hybrid.csv")
+                hybrid = hybrid[hybrid['user_id'] == user_id]
+                recommendations = {}
+                top_10 = []
+                for column in hybrid.columns:
+                    if column == 'user_id':
+                        continue
+                    top_10.append(hybrid[column].ravel()[0])
+
+                recommendations = {"Movie Recommendation": top_10}
+                recommendations = pd.DataFrame(recommendations)
+                recommendations.set_index(pd.RangeIndex(
+                    start=1, stop=11, step=1), inplace=True)
+                recommendations = recommendations.rename_axis('#')
+
+                st.dataframe(recommendations)
+            else:
+                st.error(
+                    """Due to limitations on computational resources, movie recommendations were generated for only the first 10 users using this model. 
+                        Please login using a User ID from 1 to 10 to view the recommendations provided by this model.""")
+
+        with tab5:
             st.markdown("""
                         
                         ### Collaborative Filtering:
@@ -169,7 +286,7 @@ def app_content():
                         - **Data Sparsity:** Matrix factorization and collaborative filtering models may encounter challenges in sparse datasets where user-item interactions are limited.
                         - **Interpretability:** Deep learning models, while powerful, often lack interpretability, making it challenging to explain recommendations to users.
                         """)
-            
+
             st.markdown("""
                         ### Content-Based Filtering
                         Leveraging Natural Language Processing (NLP) for content-based filtering added an extra layer of sophistication to our movie recommendation system.
@@ -194,7 +311,7 @@ def app_content():
 
                         """)
 
-        with tab5:
+        with tab6:
             st.markdown("""
                         ## Conclusion:
                         In conclusion, the project has successfully developed and implemented a robust movie prediction system, leveraging collaborative filtering and Content-Based filtering techniques. The evaluation results showcase the effectiveness of deep learning models, closely followed by matrix factorization, in accurately predicting user ratings for movies. The algorithm has demonstrated the ability to provide recommendations that align well with human suggestions.
@@ -214,8 +331,7 @@ def app_content():
 
                         **User Feedback Integration:**\
                         Implement mechanisms for collecting and integrating user feedback to continually refine and improve recommendation algorithms based on user preferences.
-                        """)   
-
+                        """)
 
 
 if __name__ == "__main__":
