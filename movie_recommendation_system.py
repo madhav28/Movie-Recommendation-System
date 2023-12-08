@@ -196,8 +196,9 @@ def app_content():
                         **Cosine Similarity for Recommendations:**\
                         Utilize cosine similarity to measure the similarity between user and movie embeddings.
                         Recommend movies with the highest cosine similarity scores, aligning with user preferences.
-                        st.image("NLP_based_method.png")
+                        
                         """)
+            st.image("NLP_based_method.png")
             st.markdown("---")
             if user_id >= 1 and user_id <= 100:
                 st.markdown("#### Top 10 Recommendations (for User ID = " +
